@@ -1,7 +1,7 @@
 import Cookie, { CookieSetOptions } from "universal-cookie";
 import { AuthResponse } from "../auth/authType";
 
-const cookie = new Cookie();
+export const cookie = new Cookie();
 export const useCookieStore = () => {
   const browserCookie = cookie.getAll<AuthResponse>();
 
@@ -13,8 +13,16 @@ export const useCookieStore = () => {
     return cookie.set(key, value, options);
   };
 
+  const logout = () => {
+    cookie.remove("session");
+    cookie.remove("user");
+
+    return (window.location.href = "/");
+  };
+
   return {
     ...browserCookie,
+    logout,
     setCookie,
   };
 };
